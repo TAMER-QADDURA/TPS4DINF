@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anagrafica Utenti</title>
+
+    <style>
+        th,
+        td,
+        tr {
+            border: 1px solid black;
+            width: 200px;
+            padding: 16px;
+        }
+        
+        input {
+            width: 200px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="nome" placeholder="Scrivi il nome"><br>
+    <input type="text" id="cognome" placeholder="Scrivi il cognome"><br>
+    <input type="text" id="indirizzo" placeholder="Scrivi l'indirizzo"><br>
+    <input type="text" id="citta" placeholder="Scrivi la città"><br>
+    <button onclick="inserisciDati()">Conferma</button>
+    <button onclick="vaiAllaPagina2()">Vai a Pagina 2</button>
+    <table id="tabella">
+        <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Indirizzo</th>
+            <th>Città</th>
+        </tr>
+    </table>
+</body>
+<script>
+    let dati = []
+
+    function inserisciDati() {
+        const nome = document.getElementById("nome").value
+        const cognome = document.getElementById("cognome").value
+        const indirizzo = document.getElementById("indirizzo").value
+        const citta = document.getElementById("citta").value
+
+        dati.push(nome, cognome, indirizzo, citta)
+        aggiornaTabella()
+        localStorage.setItem("datiUtenti", dati);
+        document.getElementById("nome").value = "";
+        document.getElementById("cognome").value = "";
+        document.getElementById("citta").value = "";
+        document.getElementById("indirizzo").value = "";
+    }
+
+    function aggiornaTabella() {
+        document.getElementById("tabella").innerHTML += "<tr>";
+        let riga = ""
+        for (let i = dati.length - 4; i < dati.length; i++) {
+            riga += "<td>" + dati[i] + "</td>";
+        }
+        document.getElementById("tabella").innerHTML += riga + "</tr>";
+    }
+    function vaiAllaPagina2(){
+        location.href = "tabdinamica2_pag2.html";
+    }
+</script>
+
+</html>
+
+

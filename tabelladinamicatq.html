@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elenco Anagrafico</title>
+
+    <style>
+        th,
+        td,
+        tr {
+            border: 1px solid black;
+            width: 200px;
+            padding: 16px;
+        }
+        
+        input {
+            width: 200px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="nome" placeholder="Inserisci nome"><br>
+    <input type="text" id="cognome" placeholder="Inserisci cognome"><br>
+    <input type="text" id="indirizzo" placeholder="Inserisci indirizzo"><br>
+    <input type="text" id="citta" placeholder="Inserisci città"><br>
+    <button onclick="aggiungiRecord()">Aggiungi</button>
+    <table id="tabella">
+        <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Indirizzo</th>
+            <th>Città</th>
+        </tr>
+    </table>
+</body>
+<script>
+    let informazioni = [];
+
+    function aggiungiRecord() {
+        const nome = document.getElementById("nome").value;
+        const cognome = document.getElementById("cognome").value;
+        const indirizzo = document.getElementById("indirizzo").value;
+        const citta = document.getElementById("citta").value;
+
+        informazioni.push(nome, cognome, indirizzo, citta);
+        aggiornaTabella();
+        document.getElementById("nome").value = "";
+        document.getElementById("cognome").value = "";
+        document.getElementById("indirizzo").value = "";
+        document.getElementById("citta").value = "";
+        informazioni = [];
+    }
+
+    function aggiornaTabella() {
+        document.getElementById("tabella").innerHTML += "<tr>";
+        let riga = "";
+        for (let i = 0; i < informazioni.length; i++) {
+            riga += "<td>" + informazioni[i] + "</td>";
+        }
+        document.getElementById("tabella").innerHTML += riga + "</tr>";
+    }
+</script>
+
+</html>

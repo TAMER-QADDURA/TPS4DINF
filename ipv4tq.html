@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatore di Subnet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calcolatore di Subnet</h1>
+
+    <label for="ipv4">Indirizzo di rete:</label>
+    <input type="text" id="ipv4">
+
+    <label for="prefix">Lunghezza del prefisso:</label>
+    <input type="text" id="prefix">
+
+    <button onclick="generaTabella()">Genera Tabella</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Indirizzo Decimale</th>
+                <th>Indirizzo Binario</th>
+            </tr>
+        </thead>
+        <tbody id="tabella">
+        </tbody>
+    </table>
+
+    <script>
+        function generaTabella() {
+            // Prendo i valori inseriti dall'utente
+            let ipv4 = document.getElementById("ipv4").value;
+            let prefisso = parseInt(document.getElementById("prefix").value);
+            
+            // Converto l'IP in binario
+            let ipBinario = convertiInBinario(ipv4);
+            let rete = ipBinario.substring(0, prefisso);
+            
+            // Calcolo quante righe servono
+            let numeroRighe = Math.pow(2, 32 - prefisso);
+
+            let righeTabella = "";
+
+            for (let i = 0; i < numeroRighe; i++) {
+                let host = numeroInBinario(i, 32 - prefisso);
+                let ipCompleto = rete + host;
+                let ipDecimale = convertiInDecimale(ipCompleto);
+
+                // Aggiungo una riga alla tabella
+                righeTabella += "<tr>" +
+                                "<td>" + (i + 1) + "</td>" +
+                                "<td>" + ipDecimale + "</td>" +
+                                "<td><span style='color: blue;'>" + rete + "</span>" +
+                                "<span style='color: red;'>" + host + "</span></td>" +
+                                "</tr>";
+            }
+
+            // Inserisco le righe nella tabella
+            document.getElementById("tabella").innerHTML = righeTabella;
+        }
+
+        function convertiInBinario(ip) {
+            let ottetti = ip.split(".");
+            let ipBinario = "";
+
+            for (let i = 0; i < ottetti.length; i++) {
+                let binario = parseInt(ottetti[i]).toString(2).padStart(8, "0");
+                ipBinario += binario;
+            }
+
+            return ipBinario;
+        }
+
+        function convertiInDecimale(ipBinario) {
+            let ottetto1 = parseInt(ipBinario.substring(0, 8), 2);
+            let ottetto2 = parseInt(ipBinario.substring(8, 16), 2);
+            let ottetto3 = parseInt(ipBinario.substring(16, 24), 2);
+            let ottetto4 = parseInt(ipBinario.substring(24, 32), 2);
+
+            return ottetto1 + "." + ottetto2 + "." + ottetto3 + "." + ottetto4;
+        }
+
+        function numeroInBinario(numero, lunghezza) {
+            return numero.toString(2).padStart(lunghezza, "0");
+        }
+    </script>
+</body>
+</html>

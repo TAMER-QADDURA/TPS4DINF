@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esercizio IPv6</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+        }
+        input {
+            margin-right: 10px;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+        }
+        p {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Esercizio IPv6</h1>
+    <label for="ipv6">Inserisci un indirizzo MAC:</label>
+    <input type="text" id="ipv6" placeholder="Inserisci MAC address">
+    <button type="button" onclick="generaLLA()">Genera LLA</button>
+    <p id="risultato"></p>
+
+    <script>
+        function generaLLA() {
+            // Prendo l'indirizzo MAC inserito dall'utente
+            let macAddress = document.getElementById("ipv6").value;
+            let gruppi = macAddress.split(":");
+
+            // Converto il primo gruppo in binario
+            let primoGruppoBinario = convertiHexInBinario(gruppi[0]);
+
+            // Cambio il settimo bit
+            if (primoGruppoBinario[6] === "0") {
+                primoGruppoBinario = primoGruppoBinario.substring(0, 6) + "1" + primoGruppoBinario.substring(7);
+            } else {
+                primoGruppoBinario = primoGruppoBinario.substring(0, 6) + "0" + primoGruppoBinario.substring(7);
+            }
+
+            // Riconverto il gruppo modificato in esadecimale
+            gruppi[0] = convertiBinarioInHex(primoGruppoBinario);
+
+            // Costruisco l'indirizzo IPv6 Link-Local
+            let ipv6LLA = "fe80::" + gruppi[0] + gruppi[1] + ":" + gruppi[2] + "ff:fe" + gruppi[3] + ":" + gruppi[4] + gruppi[5];
+
+            // Mostro il risultato
+            document.getElementById("risultato").textContent = "Indirizzo IPv6 Link-Local: " + ipv6LLA;
+        }
+
+        function convertiHexInBinario(hex) {
+            return parseInt(hex, 16).toString(2).padStart(8, "0");
+        }
+
+        function convertiBinarioInHex(bin) {
+            return parseInt(bin, 2).toString(16);
+        }
+    </script>
+</body>
+</html>
