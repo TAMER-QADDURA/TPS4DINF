@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatrice</title>      
+</head>
+<body>
+    <div class="Calcolatrice">
+        <input type="text" id="ris" disabled>
+        <div class="buttons">
+            <button onclick="calcola('7')">7</button>
+            <button onclick="calcola('8')">8</button>
+            <button onclick="calcola('9')">9</button>
+            <button onclick="calcola('/')">/</button><br>
+            <button onclick="calcola('4')">4</button>
+            <button onclick="calcola('5')">5</button>
+            <button onclick="calcola('6')">6</button>
+            <button onclick="calcola('*')">*</button><br>
+            <button onclick="calcola('1')">1</button>
+            <button onclick="calcola('2')">2</button>
+            <button onclick="calcola('3')">3</button>
+            <button onclick="calcola('-')">-</button><br>
+            <button onclick="calcola('0')">0</button>
+            <button onclick="calcolaRisultato()">=</button>
+            <button onclick="calcola('+')">+</button>
+	    <button onclick="cancella('C')">C</button>
+        </div>
+    </div>
+    <script>
+        function calcola(value) {
+            document.getElementById('ris').value += value;
+        }
+
+
+        function cancella() {
+            document.getElementById('ris').value = '';
+        }
+
+
+        function calcolaRisultato() {
+            const risultato = document.getElementById('ris');
+            try {
+                risultato.value = eval(risultato.value);
+            } catch {
+                risultato.value = 'Errore';
+            }
+        }
+    </script>
+</body>
+</html>
+
