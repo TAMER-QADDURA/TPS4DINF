@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tabella Migranti</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px auto;
+            padding: 0;
+            max-width: 800px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tabella Migranti</h1>
+    <input type="file" onchange="leggiFile(this)">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Anno</th>
+                <th>Numero di migranti</th>
+            </tr>
+        </thead>
+        <tbody id="corpo-tabella"></tbody>
+    </table>
+
+    <script>
+        function leggiFile(input) {
+            let file = input.files[0]; // Prendo il file selezionato
+            let lettore = new FileReader(); // Creo un oggetto per leggere il file
+
+            // Leggo il file come testo
+            lettore.readAsText(file);
+
+            // Quando il file è pronto
+            lettore.onload = function() {
+                let contenuto = lettore.result; // Prendo il testo del file
+                creaTabella(contenuto); // Chiamo la funzione per creare la tabella
+            };
+
+            // Se c'è un errore
+            lettore.onerror = function() {
+                alert("Errore durante la lettura del file. Prova di nuovo.");
+            };
+        }
+
+        function creaTabella(contenuto) {
+            let righe = contenuto.trim().split("\n"); // Divido il file in righe
+
+            // Controllo che ci siano abbastanza righe
+            if (righe.length < 2) {
+                alert("Il file non contiene dati validi.");
+                return;
+            }
+
+            let righeTabella = ""; // Variabile per salvare le righe della tabella
+
+            // Per ogni riga a partire dalla seconda
+            for (let i = 1; i < righe.length; i++) {
+                let colonne = righe[i].split(","); // Divido la riga in colonne
+
+                // Controllo che ci siano due colonne
+                if (colonne.length === 2) {
+                    let anno = colonne[0].trim(); // Prendo la prima colonna
+                    let migranti = colonne[1].trim(); // Prendo la seconda colonna
+
+                    // Aggiungo una riga alla tabella
+                    righeTabella += "<tr><td>" + anno + "</td><td>" + migranti + "</td></tr>";
+                }
+            }
+
+            // Inserisco le righe nel corpo della tabella
+            document.getElementById("corpo-tabella").innerHTML = righeTabella;
+        }
+    </script>
+</body>
+</html>
